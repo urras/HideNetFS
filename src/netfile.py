@@ -1,3 +1,5 @@
+import pickle
+
 class NetFile(object):
     '''A file that will be stored on the network.'''
 
@@ -18,3 +20,11 @@ class NetFile(object):
     file_id = property(get_file_id, doc='Identification code of the file')
     part_id = property(get_part_id, doc='Identification code of the file part')
     path = property(get_path, doc='Path to the file in local storage')
+
+def load(dbfile):
+    with open(dbfile, 'r') as datastore:
+        return pickle.load(datastore)
+
+def dump(dbfile, netfiles):
+    with open(dbfile, 'w') as datastore:
+        pickle.dump(datastore, netfiles)
