@@ -17,3 +17,6 @@ class Connection(object):
 
     def recv(self):
         return self.medium.get()
+
+    def has_msg(self):
+        return not self.medium.empty()

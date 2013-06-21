@@ -22,6 +22,8 @@ class NetFile(object):
     path = property(get_path, doc='Path to the file in local storage')
 
 def load(dbfile):
+    if not dbfile:
+        return []
     with open(dbfile, 'r') as datastore:
         return pickle.load(datastore)
 
