@@ -15,14 +15,18 @@ class Node(object):
         self.neighbours[node] = connection
 
     def disconnect_from(self, node):
+        if node not in self.neighbours:
+            raise KeyError("Not connection to %s from %s." %(node.address, self.address))
         self.neighbours[node].disconnect()
 
     def get_file(self, fileid):
+        if fileid not in self.files:
+            raise KeyError("No file with id %s is stored." %fileid)
         return self.files[fileid]
 
     def add_file(self, fileid, netf):
         if fileid in self.files:
-            raise ValueError("File with id %s exists." %fileid)
+            raise KeyError("File with id %s exists." %fileid)
         self.files[fileid] = netf
 
     def ping_alive(self):

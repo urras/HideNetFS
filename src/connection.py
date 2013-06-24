@@ -6,17 +6,13 @@ class Connection(object):
         self.ping_count = 0
 
     def disconnect(self):
-        # For queue medium:
-        pass
+        self.medium.close()
 
     def send(self, data):
-        self.medium.put(data)
+        self.medium.send(data)
 
     def zero_ping_count(self):
         self.ping_count = 0
 
-    def recv(self):
-        return self.medium.get()
-
-    def has_msg(self):
-        return not self.medium.empty()
+    def recv(self, transmission_size=constants.DEFAULT_PACKET_SIZE):
+        return self.medium.recv(transmission_size)
