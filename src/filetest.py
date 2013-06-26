@@ -11,7 +11,7 @@ if len(sys.argv) < 4:
     print("Run: python %s [self-ip] [friend-ip] [file-to-share] <client>" %sys.argv[0])
     print("If anything is provided for the <client> arg, this instance will be the client.")
     sys.exit(1)
-if not os.path.isfile(sys.argv[2]):
+if not os.path.isfile(sys.argv[3]):
     print("%s is not a file on the disk." %sys.argv[2])
     sys.exit(1)
 
