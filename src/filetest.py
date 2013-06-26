@@ -18,7 +18,7 @@ if not os.path.isfile(sys.argv[3]):
 if len(sys.argv) >= 5:
     # Connect to the friend node that is acting as the server.
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((sys.argv[1], constants.PORT))
+    client.connect((sys.argv[2], constants.PORT))
 else:
     # Create a server to listen in for the neighbour client connection.
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
