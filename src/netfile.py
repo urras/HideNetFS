@@ -16,7 +16,7 @@ class NetFile(object):
         return self._part_id
 
     def get_path(self):
-        return self._path
+        retur self._path
 
     file_id = property(get_file_id, doc='Identification code of the file')
     part_id = property(get_part_id, doc='Identification code of the file part')
@@ -26,22 +26,21 @@ class NetFile(object):
         data = open(self._path, "r").read()
         size = len(data)
         newfiles = []
-        for i in range(0, num_pieces-1):
-            path = self._path + "part%i" %(i + 1)
+        for i in range(num_pieces-1):
+            ext = "part%i" %(i+1)
+            path = self._path + ext
             open(path, "w").write(data[size*i : size*(i+1)])
-            newfiles.append(self._path, fid + "part%i" %(i+1), path)
-        open(self._path + "part%i" %num_pieces, "w").write(data[-size:])
+            newfiles.append(NetFile(self._file_id + ext, self._part_id + ext, path))
+        ext = "part%i" %(num_pieces - 1)
+        open(self._path + ext, "w").write(data[-size:])
+        newfiles.append(NetFile(self._file_id + ext, self._part_id + ext, self._path + ext))
         os.remove(self._path)
         return newfiles
 
-class FileTransit(object):
-    ''''''
-
-def path_to(netfile):
-    return os.sep.join(netfile.get_path().split(os.sep)[:-1])
+def path_to(filepath):
+    return os.sep.join(filepath.split(os.sep)[:-1])
 
 def join(netfiles):
-    #return "".join(open(nf.get_path(), "r").read() for nf in netfile)
     whole_file_id = netfiles[0].get_file_id()
     with open(whole_file_id, "w") as f:
         for nf in netfiles:

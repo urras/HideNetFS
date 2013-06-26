@@ -43,10 +43,12 @@ class Node(object):
                 if msg == constants.ZERO_PING:
                     self.handle_ping(neighbour)
                 else:
-                    print(msg) # Just to test for now.
+                    print(msg) # temporary
 
-    def message(self, node, msg):
+    def send_file(self, node, netfile, maxlen=constants.DEFAULT_PACKET_SIZE, padchar='{'):
         if node not in self.neighbours:
-            return False
-        self.neighbours[node].send(msg)
-        return True
+            raise KeyError("No connection to %s from %s." %(node.address, self.address))
+        partdat = "File Part %s" %netfile.get_pard_id()
+        content = open(netfile.get_path(), "r").read()
+        content = (padchar * (maxlen - len(content) - len(partdat))) + partdat + content
+        self.neighbours[node].send(content)
