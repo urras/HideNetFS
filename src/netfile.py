@@ -16,7 +16,7 @@ class NetFile(object):
         return self._part_id
 
     def get_path(self):
-        retur self._path
+        return self._path
 
     file_id = property(get_file_id, doc='Identification code of the file')
     part_id = property(get_part_id, doc='Identification code of the file part')
@@ -42,10 +42,11 @@ def path_to(filepath):
 
 def join(netfiles):
     whole_file_id = netfiles[0].get_file_id()
+    path = netfiles[0].get_path()
     with open(whole_file_id, "w") as f:
         for nf in netfiles:
             f.write(open(nf.get_path(), "r").read())
-    return NetFile(whole_file_id, whole_file_id, 
+    return NetFile(whole_file_id, whole_file_id, path)
 
 def load(dbfile):
     if not dbfile:

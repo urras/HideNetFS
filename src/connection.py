@@ -1,3 +1,5 @@
+import constants
+
 class Connection(object):
     '''Represents a link to a neighbour used to communicate across.'''
 
