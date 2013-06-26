@@ -33,7 +33,7 @@ node.connect_to(friend, client)
 
 # Split the file into 10 different parts to share easily.
 filename = sys.argv[3].split(os.sep)[-1]
-netf = netfile.NetFile(filename, filename, sys.argv[2])
+netf = netfile.NetFile(filename, filename, ".")
 parts = netf.split(10)
 
 if len(sys.argv) >= 5:
