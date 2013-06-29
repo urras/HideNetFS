@@ -14,6 +14,13 @@ people with access to sensitive information can never be associated with it.
 
 ![HNFS Diagram](https://raw.github.com/identityFn/HideNetFS/master/hnfsdiagram.png)
 
+HNFS demands users offer more space on their harddrive than they wish to use in order to
+use the network. In return, the network provides:
+
+1. Distributed file storage within the network.
+2. Automatic file transfer, keeping data moving through the network and never stagnant.
+3. Multiple copies will be kept in the network to avoid problems due to dead sources.
+
 ## Storing a File ##
 
 1. Split the file into pieces.
@@ -30,6 +37,13 @@ people with access to sensitive information can never be associated with it.
 1. Propagate a request over the whole network.
 2. Nodes containing part of a requested file send it back via a random path along which the request was forwarded.
 3. The owner waits until it has all the parts of the file and reconstructs it.
+
+## Requirements for Users ##
+
+Users of the network are expected to:
+
+1. Offer more space than they wish to use. How much is yet to be determined.
+2. Keep their node active.
 
 # Messages #
 
