@@ -15,7 +15,8 @@ net_file* make_net_file(char* file_id, char* part_id, char* file_path);
 void free_net_file(net_file* nf);
 int dump(nf_list* netfiles, FILE* storage);
 nf_list* load(FILE* storage);
-nf_list* nfsplit(net_file* nf, int num_pieces);
+nf_list* nfsplit(net_file* nf, int num_pieces)
+net_file* nfjoin(nf_list* nflist);
 char* path_to(net_file* nf, char* buffer);
 
 #endif /* __NETFILE_H__ */

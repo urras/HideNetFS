@@ -88,7 +88,7 @@ nf_list* nfsplit(net_file* nf, int num_pieces)
      */
     for (index = 0; index < num_pieces && !feof(content); index++) {
         memset(filename, 0, 2 * MAX_ID_LEN + MAX_PATH_LEN + 1);
-        newnf = make_new_netfile(nf->fileid, "", nf->path);
+        newnf = make_net_file(nf->fileid, "", nf->path);
         snprintf(newnf->partid, MAX_ID_LEN, "%spart%d", nf->partid, index);
         filename = path_to(newnf, filename);
         fout = fopen(filename, "wb");
@@ -103,6 +103,30 @@ nf_list* nfsplit(net_file* nf, int num_pieces)
     }
     fclose(content);
     return nflist;
+}
+
+net_file* nfjoin(nf_list* nflist)
+{
+    nf_list_iterator iter = nf_list_iterate(nflist);
+    net_file* newnf, first;
+    char filename[2 * MAX_ID_LEN + MAX_PATH_LEN + 1];
+    char* lastpart;
+    FILE* fout, fin;
+
+    memset(filename, 0, 2 * MAX_ID_LEN + MAX_PATH_LEN + 1);
+    first = nf_list_get(nflist, 0);
+    newnf = make_net_file(first->fileid, "", first->path);
+    fout = fopen(path_to(newnf, filename), "ab");
+    while (nf_list_next(nflist, &iter)) {
+        memset(filename, 0, 2 * MAX_ID_LEN + MAX_PATH_LEN + 1);
+        filename = path_to(iter, filename);
+        fin = fopen(filename, "rb");
+        while (!feof(fin))
+            fputc(fgetc(fin), fout);
+        fclose(fin);
+    }
+    fclose(fout);
+    return newnf;
 }
 
 char* path_to(net_file* nf, char* buffer)
