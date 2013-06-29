@@ -10,9 +10,9 @@ nodes in the network.
 The goal of the project is to create a distributed tool to anonymize file owners so that
 people with access to sensitive information can never be associated with it.
 
-![HNFS Diagram](https://raw.github.com/identityFn/HideNetFS/master/hnfsdiagram.png)
-
 # How It Works #
+
+![HNFS Diagram](https://raw.github.com/identityFn/HideNetFS/master/hnfsdiagram.png)
 
 ## Storing a File ##
 
