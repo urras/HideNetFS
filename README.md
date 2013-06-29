@@ -44,3 +44,9 @@ people with access to sensitive information can never be associated with it.
 # On-Disk Storage #
 
 PATH/FILEID|PARTID (| means concatenation)
+
+# Encryption of Information #
+
+All file content will be encrypted with a key known only to the owner, and then for
+messages passed between neighbours, asymmetric encryption will be used to encrypt
+request messages.
