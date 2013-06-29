@@ -211,6 +211,7 @@
 			free_fn(temp.car); \
             free(temp); \
 		} \
+        free(s); \
     } \
 	struct N /* to avoid extra semicolon outside of a function */
 
