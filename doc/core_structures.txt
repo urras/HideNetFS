@@ -1,0 +1,26 @@
+Net Files
+----------  
+  Fields
+  - fileid, a random string that represents the whole file.
+  - partid, a string of the form 'partX' where is is some positive integer.
+  - path,   the path to the file on the disk.
+  
+  Provides functions used to load information about files from and dump said information to
+  a local file. Also supports splitting and joining of files so that they can be distributed
+  across the network and rebuilt after being retrieved.
+
+  Note that, on the disk, files are stored in the format PATH/FILEID|PARTID (| => concatenate).
+
+Node
+-----
+  Fields
+  - address,    the IP identifying the node.
+  - neighbours, maps nodes connected to to the socket they communicate through.
+  - files,      maps fileids to the Net File representing it.
+  - owned,      maps file descriptors (names?) of the user's files to fileids to retrieve.
+  - lastPing,   time since the last ping message was sent out informing network of activity.
+
+  Represents the computer as a node in the network. Each node stores information about the
+  nodes it is connected to in order to communicate, information about the files it is storing
+  for other users, information about the files owned by this node's user, and the time since
+  the node last sent a ping to its neighbours to inform the network it is still active.
