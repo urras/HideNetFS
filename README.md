@@ -21,6 +21,9 @@ use the network. In return, the network provides:
 2. Automatic file transfer, keeping data moving through the network and never stagnant.
 3. Multiple copies will be kept in the network to avoid problems due to dead sources.
 
+If users do not meet the usage requirements, their files will be removed from the network
+slowly over time (copy by copy).
+
 ## Storing a File ##
 
 1. Split the file into pieces.
