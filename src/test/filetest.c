@@ -12,7 +12,7 @@ int main(int argc, char** argv)
     nf_list* netfiles;
     char* fid = malloc(sizeof(char) * (MAX_ID_LEN + 1));
     char* pid = malloc(sizeof(char) * (MAX_ID_LEN + 1));
-    char path = '.';
+    char* path = ".";
     int i;
     FILE* storage = fopen("netfiles.dat", "wb");
 
@@ -22,7 +22,7 @@ int main(int argc, char** argv)
     fid = randstr(fid, MAX_ID_LEN);
     *pid = 0;
     rename("generateddata.txt", fid);
-    generated = make_net_file(fid, pid, &path);
+    generated = make_net_file(fid, pid, path);
     printf("Renamed generateddata.txt to %s and created net_file.\n", fid);
 
     /* Try to split, store, and recover the netfiles. */
