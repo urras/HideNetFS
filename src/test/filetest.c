@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <assert.h>
 
 #include "../netfile.h"
 #include "../util.h"
@@ -20,13 +21,16 @@ int main(int argc, char** argv)
 
     /* Create a net file to manipulate for testing. */
     fid = randstr(fid, MAX_ID_LEN);
+	assert(fid);
     *pid = 0;
     rename("generateddata.txt", fid);
     generated = make_net_file(fid, pid, path);
+	assert(generated);
     printf("Renamed generateddata.txt to %s and created net_file.\n", fid);
 
     /* Try to split, store, and recover the netfiles. */
     netfiles = nfsplit(generated, 2);
+	assert(netfiles);
     printf("Split %s into 2 pieces.\n", fid);
     remove(fid);
     i = dump(netfiles, storage);

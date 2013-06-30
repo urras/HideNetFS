@@ -55,7 +55,6 @@ nf_list* load(FILE* storage)
 
     memset(file_id, 0, MAX_ID_LEN + 1);
     memset(part_id, 0, MAX_ID_LEN + 1);
-    memset(fpath, 0, MAX_PATH_LEN + 1);
 
     for (index = 0; !feof(storage); index++) {
         fgets(file_id, MAX_ID_LEN + 1, storage); 
@@ -82,6 +81,7 @@ nf_list* nfsplit(net_file* nf, int num_pieces)
     memset(filename, 0, 2 * MAX_ID_LEN + MAX_PATH_LEN + 1);
     filename = path_to(nf, filename);
     content = fopen(filename, "rb");
+	if (!content) return NULL;
     orig_size = fcontent_length(content);
 
     /* Split the file up by writing equal-sized pieces into new files
@@ -113,7 +113,6 @@ net_file* nfjoin(nf_list* nflist)
     net_file* newnf;
     net_file* first;
     char* filename = malloc(sizeof(char) * (2 * MAX_ID_LEN + MAX_PATH_LEN + 1));
-    char* lastpart;
     FILE* fout;
     FILE* fin;
 

@@ -1,0 +1,5 @@
+*.o
+*.swp
+code
+vgcore.*
+netfiles.dat
