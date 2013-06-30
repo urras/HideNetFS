@@ -1,6 +1,7 @@
-/* llist.h: a CPP-based template implementation of singly-linked list 
-    Created by mcef: https://github.com/mcef
-*/
+/* 
+ * llist.h: a CPP-based template implementation of singly-linked list 
+ * Created by mcef: https://github.com/mcef
+ */
 
 #ifndef LLIST_H_INCLUDED
 #define LLIST_H_INCLUDED
@@ -24,7 +25,7 @@
 	void N##_set_at(N *s, T item, N##_iterator iter); \
 	int N##_insert_at(N *s, T item, N##_iterator iter); \
 	T N##_pop_at(N *s, N##_iterator iter); \
-    void N##_free_with(N *s, void (*free_fn)(T))
+	void N##_free_with(N *s, void (*free_fn)(T))
 
 #define LLIST(T, N) \
 	N *N##_new(void) \
@@ -201,18 +202,18 @@
 		free(iter.curr); \
 		return val; \
 	} \
-    void N##_free_with(N *s, void (*free_fn)(T)) \
-    { \
+	void N##_free_with(N *s, void (*free_fn)(T)) \
+	{ \
 		N##_pair *p, *temp; \
 		temp = NULL; \
 		for (p=s->first; p; ) { \
 			temp = p; \
 			p = p->cdr; \
 			free_fn(temp->car); \
-            free(temp); \
+			free(temp); \
 		} \
-        free(s); \
-    } \
+		free(s); \
+	} \
 	struct N /* to avoid extra semicolon outside of a function */
 
 #endif /* ifndef LLIST_H_INCLUDED */

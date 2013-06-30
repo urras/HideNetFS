@@ -1,5 +1,8 @@
 *.o
 *.swp
-code
+core
 vgcore.*
-netfiles.dat
+test/netfiles.dat
+test/*part0
+test/*part1
+test/filetest
