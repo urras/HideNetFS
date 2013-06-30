@@ -11,14 +11,26 @@ LLIST(net_file*, nf_list);
 
 net_file* make_net_file(char* file_id, char* part_id, char* file_path)
 {
+	int len;
+
 	net_file* nf = malloc(sizeof(net_file));
 	nf->fileid = malloc(sizeof(char) * (MAX_ID_LEN + 1));
 	nf->partid = malloc(sizeof(char) * (MAX_ID_LEN + 1));
 	nf->path = malloc(sizeof(char) * (strlen(file_path) +1));
 
 	strncpy(nf->fileid, file_id, MAX_ID_LEN);
+	nf->fileid[MAX_ID_LEN] = '\0';
+	len = strlen(nf->fileid);
+	if (len && nf->fileid[len-1] == '\n') nf->fileid[len-1] = '\0';
+
 	strncpy(nf->partid, part_id, MAX_ID_LEN);
+	nf->partid[MAX_ID_LEN] = '\0';
+	len = strlen(nf->partid);
+	if (len && nf->partid[len-1] == '\n') nf->partid[len-1] = '\0';
+
 	strcpy(nf->path, file_path); 
+	len = strlen(nf->path);
+	if (len && nf->path[len-1] == '\n') nf->path[len-1] = '\0';
 
 	return nf;
 }
@@ -48,19 +60,16 @@ int dump(nf_list* netfiles, FILE* storage)
 nf_list* load(FILE* storage)
 {
 	nf_list* nflist = nf_list_new();
-	char file_id[MAX_ID_LEN + 1];
-	char part_id[MAX_ID_LEN + 1];
-	char* fpath;
-	int index;
+	char *file_id, *part_id, *fpath;
 
-	memset(file_id, 0, MAX_ID_LEN + 1);
-	memset(part_id, 0, MAX_ID_LEN + 1);
-
-	for (index = 0; !feof(storage); index++) {
-		fgets(file_id, MAX_ID_LEN + 1, storage); 
-		fgets(part_id, MAX_ID_LEN + 1, storage);
-		fpath = read_line(storage);
-		nf_list_insert(nflist, make_net_file(file_id, part_id, fpath), index);
+	while (!feof(storage) && !ferror(storage)) {
+		if (!(file_id = read_line(storage)) || !*file_id) break;
+		if (!(part_id = read_line(storage))) break;
+		if (!(fpath = read_line(storage)) || !*fpath) break;
+		nf_list_insert(nflist, make_net_file(file_id, part_id, fpath), -1);
+		free(file_id);
+		free(part_id);
+		free(fpath);
 	}
 	return nflist;
 }
@@ -72,7 +81,7 @@ nf_list* nfsplit(net_file* nf, int num_pieces)
 	char* filename;
 	FILE* fout;
 	FILE* content;
-	int index, wrote;
+	int index;
 	size_t orig_size;
 
 	/* Get the size of the file to split so we know how many bytes to
@@ -96,8 +105,7 @@ nf_list* nfsplit(net_file* nf, int num_pieces)
 			nf_list_free_with(nflist, free_net_file);
 			return NULL;
 		}
-		for (wrote = 0; wrote <= orig_size / num_pieces && !feof(content); wrote++)
-			fputc(fgetc(content), fout);
+		copyn(fout, content, orig_size/num_pieces);
 		fclose(fout);
 		nf_list_insert(nflist, newnf, index);
 	}
@@ -114,16 +122,20 @@ net_file* nfjoin(nf_list* nflist)
 	char* filename;
 	FILE* fout;
 	FILE* fin;
-
+ 
 	first = nf_list_get(nflist, 0);
 	newnf = make_net_file(first->fileid, "", first->path);
 	fout = fopen(filename=path_to(newnf), "ab");
+	if (!fout) {
+		free_net_file(newnf);
+		return NULL;
+	}
 	while (nf_list_next(nflist, &iter)) {
 		free(filename);
 		filename = path_to(nf_list_get_at(nflist, iter));
 		fin = fopen(filename, "rb");
-		while (!feof(fin))
-			fputc(fgetc(fin), fout);
+		if (!fin) break;
+		copy(fout, fin);
 		fclose(fin);
 	}
 	free(filename);

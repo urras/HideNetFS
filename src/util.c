@@ -59,3 +59,36 @@ char *read_line(FILE *f)
 	}
 	return line;
  }
+
+int copy(FILE *dst, FILE *src)
+{
+	char buf[1024*4];
+	int r, w;
+	int c = 0;
+
+	while ((r = fread(buf, 1, 1024*4, src)) > 0) {
+		w = fwrite(buf, 1, r, dst);
+		c += w;
+		if (r != w) break;
+	}
+
+	return c;
+}
+
+int copyn(FILE *dst, FILE *src, size_t n)
+{
+	char buf[1024*4];
+	int r, w;
+	int to_read = n<1024*4 ? n : 1024*4;
+	int c = 0;
+
+	while (n > 0 && (r = fread(buf, 1, to_read, src)) > 0) {
+		w = fwrite(buf, 1, r, dst);
+		c += w;
+		n -= w;
+		to_read = n<1024*4 ? n : 1024*4;
+		if (r != w) break;
+	}
+
+	return c;
+}

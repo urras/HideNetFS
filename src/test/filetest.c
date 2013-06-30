@@ -45,9 +45,12 @@ int main(int argc, char** argv)
 	printf("Freed both the list of split netfiles and generated netfile.\n");
 	fclose(storage);
 	storage = fopen("netfiles.dat", "rb");
+	assert(storage);
 	netfiles = load(storage);
+	assert(netfiles);
 	printf("Loaded netfile list from netfiles.dat.\n");
 	generated = nfjoin(netfiles);
+	assert(generated);
 	printf("Rejoined netfiles into one.\n");
 
 	/* Free resources and end. */

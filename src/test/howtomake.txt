@@ -1,1 +1,0 @@
-gcc -o filetest -Wall -Wextra -g filetest.c ../*.c
