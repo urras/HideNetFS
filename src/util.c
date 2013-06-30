@@ -12,18 +12,6 @@ size_t fcontent_length(FILE* f)
     return size;
 }
 
-char* rstrstr(const char* haystack, const char* needle)
-{
-    char* pt1, pt2;
-    
-    pt1 = strstr(haystack, needle);
-    do {
-        pt2 = pt1;
-        pt1 = strstr(pt1, needle);
-    } while (pt1 != NULL);
-    return pt2;
-}
-
 char* randstr(char* dest, size_t length)
 {
     int index = 0;

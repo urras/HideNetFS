@@ -9,15 +9,15 @@ int main(int argc, char** argv)
 {
     net_file* generated;
     nf_list* netfiles;
-    char fid[MAX_ID_LEN + 1];
-    char pid[MAX_ID_LEN + 1];
+    char* fid = malloc(sizeof(char) * (MAX_ID_LEN + 1));
+    char* pid = malloc(sizeof(char) * (MAX_ID_LEN + 1));
     char path = '.';
     int i;
     FILE* storage = fopen("netfiles.dat", "wb");
 
     /* Create a net file to manipulate for testing. */
     fid = randstr(fid, MAX_ID_LEN);
-    pid = '';
+    *pid = 0;
     rename("generateddata.txt", fid);
     generated = make_net_file(fid, pid, &path);
     printf("Renamed generateddata.txt to %s and created net_file.\n", fid);
@@ -28,8 +28,8 @@ int main(int argc, char** argv)
     remove(fid);
     i = dump(netfiles, storage);
     printf("Dumped %d parts of %s into netfiles.dat.\n", i, fid);
-    printf("Part 1: %s\n", path_to(nf_list_get(netfiles, 0)));
-    printf("Part 2: %s\n", path_to(nf_list_get(netfiles, 1)));
+    printf("Part 1: %s\n", path_to(nf_list_get(netfiles, 0), fid));
+    printf("Part 2: %s\n", path_to(nf_list_get(netfiles, 1), fid));
     nf_list_free_with(netfiles, free_net_file);
     free_net_file(generated);
     printf("Freed both the list of split netfiles and generated netfile.\n");
@@ -42,7 +42,9 @@ int main(int argc, char** argv)
 
     /* Free resources and end. */
     fclose(storage);
-    nf_list_free_with(nflist, free_net_file);
+    free(fid);
+    free(pid);
+    nf_list_free_with(netfiles, free_net_file);
     free_net_file(generated);
     printf("Resources freed. Ending.\n");
     return 0;

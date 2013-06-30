@@ -208,7 +208,7 @@
 		for (p=s->first; p; ) { \
 			temp = p; \
 			p = p->cdr; \
-			free_fn(temp.car); \
+			free_fn(temp->car); \
             free(temp); \
 		} \
         free(s); \
