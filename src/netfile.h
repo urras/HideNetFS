@@ -4,9 +4,9 @@
 #define __NETFILE_H__
 
 typedef struct {
-	char* fileid;
-	char* partid;
-	char* path;
+    char* fileid;
+    char* partid;
+    char* path;
 } net_file;
 
 LLIST_PROTO(net_file*, nf_list);
