@@ -38,5 +38,6 @@ char* randstr(char* dest, size_t length)
             index++;
         }
     }
+    dest[length] = 0;
     return dest;
 }
