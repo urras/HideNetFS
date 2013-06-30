@@ -12,14 +12,14 @@ LLIST(net_file*, nf_list);
 net_file* make_net_file(char* file_id, char* part_id, char* file_path)
 {
     net_file* nf = malloc(sizeof(net_file));
-    nf->fileid = malloc(sizeof(char) * MAX_ID_LEN + 1);
-    nf->partid = malloc(sizeof(char) * MAX_ID_LEN + 1);
-    nf->path = malloc(sizeof(char) * MAX_PATH_LEN + 1);
+    nf->fileid = malloc(sizeof(char) * (MAX_ID_LEN + 1));
+    nf->partid = malloc(sizeof(char) * (MAX_ID_LEN + 1));
+    nf->path = malloc(sizeof(char) * (strlen(file_path) +1));
 
     strncpy(nf->fileid, file_id, MAX_ID_LEN);
     strncpy(nf->partid, part_id, MAX_ID_LEN);
-    strncpy(nf->path, file_path, MAX_PATH_LEN);
-    
+    strcpy(nf->path, file_path); 
+
     return nf;
 }
 
@@ -50,7 +50,7 @@ nf_list* load(FILE* storage)
     nf_list* nflist = nf_list_new();
     char file_id[MAX_ID_LEN + 1];
     char part_id[MAX_ID_LEN + 1];
-    char fpath[MAX_PATH_LEN + 1];
+    char* fpath;
     int index;
 
     memset(file_id, 0, MAX_ID_LEN + 1);
@@ -58,9 +58,9 @@ nf_list* load(FILE* storage)
     memset(fpath, 0, MAX_PATH_LEN + 1);
 
     for (index = 0; !feof(storage); index++) {
-        fgets(file_id, MAX_ID_LEN + 1, storage); // Might be losing bytes for
-        fgets(part_id, MAX_ID_LEN + 1, storage); // successive strings because
-        fgets(fpath, MAX_PATH_LEN + 1, storage); // of the endline being read.
+        fgets(file_id, MAX_ID_LEN + 1, storage); 
+        fgets(part_id, MAX_ID_LEN + 1, storage);
+        fpath = read_line(storage);
         nf_list_insert(nflist, make_net_file(file_id, part_id, fpath), index);
     }
     return nflist;
