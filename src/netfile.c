@@ -82,7 +82,10 @@ nf_list* nfsplit(net_file* nf, int num_pieces)
     memset(filename, 0, 2 * MAX_ID_LEN + MAX_PATH_LEN + 1);
     filename = path_to(nf, filename);
     content = fopen(filename, "rb");
-    orig_size = fcontent_length(content);
+    if (!content) 
+        orig_size = 0;
+    else 
+        orig_size = fcontent_length(content);
 
     /* Split the file up by writing equal-sized pieces into new files
      * represented by the list of new net_file structs created.
