@@ -29,3 +29,32 @@ char* randstr(char* dest, size_t length)
     dest[length] = 0;
     return dest;
 }
+ 
+/* https://gist.github.com/mcef/5896303 */
+char *read_line(FILE *f)
+{
+    char *line, *l;
+    size_t linelen;
+    char buf[READ_LINE_BUFFER];
+    size_t len;
+     
+    line = NULL;
+    linelen = 0;
+       
+    while (!feof(f) && !ferror(f)) {
+        if (!fgets(buf, (READ_LINE_BUFFER), f)) break;
+        len = strlen(buf);
+        l = realloc(line, linelen + len + 1);
+        if (!l) {
+            if (line) free(line);
+            return NULL;
+        }
+        line = l;
+        strcpy(line+linelen, buf);
+        linelen += len;
+        if (line[linelen-1] == '\n') {
+            break;
+        }
+    }
+    return line;
+ }
