@@ -1,0 +1,8 @@
+" Vim temporary files
+.*.*.swp
+
+" Data files created during testing
+*.dat
+
+" Generated junk data
+generateddata.txt
