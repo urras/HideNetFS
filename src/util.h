@@ -11,4 +11,7 @@ int copyn(FILE *dst, FILE *src, size_t n);
 /* mcef's readline function from https://gist.github.com/mcef/5896303 */
 char* read_line(FILE* f);
 
+/* a nice string hashing function, see http://www.cse.yorku.ca/~oz/hash.html */
+uint32_t djb2(const char* str);
+
 #endif /* __UTIL_H__ */
